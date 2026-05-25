@@ -167,6 +167,7 @@
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px; padding: 1.75rem;
       transition: border-color .2s, transform .2s;
+      display: flex; flex-direction: column;
     }
     .case-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-3px); }
     .case-tag {
@@ -176,8 +177,119 @@
       border-radius: 4px; padding: 0.25rem 0.6rem; margin-bottom: 1rem;
     }
     .case-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
-    .case-body { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
-    .case-metric { font-size: 0.8rem; font-weight: 600; color: var(--gold2); }
+    .case-body { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; flex: 1; }
+    .case-metric { font-size: 0.8rem; font-weight: 600; color: var(--gold2); margin-bottom: 1rem; }
+    .case-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .deep-dive-btn {
+      background: none; border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold); font-size: 0.8rem; font-weight: 600;
+      padding: 0.4rem 0.9rem; border-radius: 5px; cursor: pointer;
+      transition: all .2s; font-family: inherit; letter-spacing: 0.02em;
+      text-decoration: none; display: inline-block;
+    }
+    .deep-dive-btn:hover { background: rgba(201,168,76,0.12); border-color: var(--gold); }
+
+    /* ── MODAL ── */
+    #modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(5,14,25,0.88); backdrop-filter: blur(6px);
+      align-items: flex-start; justify-content: center;
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+    }
+    #modal-overlay.open { display: flex; }
+    #modal-panel {
+      background: var(--navy2);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 16px;
+      max-width: 780px; width: 100%;
+      padding: 2.5rem;
+      position: relative;
+      margin: auto;
+      animation: modal-in .22s ease;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    #modal-close {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      background: rgba(255,255,255,0.06); border: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      color: var(--muted); font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, color .2s; font-family: inherit;
+    }
+    #modal-close:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+    #modal-loading {
+      text-align: center; color: var(--muted); padding: 3rem 0;
+      font-size: 0.9rem;
+    }
+    /* Markdown rendered content styles */
+    #modal-body { color: var(--light); line-height: 1.75; }
+    #modal-body h1 { font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.4rem; }
+    #modal-body h2 { font-size: 1.1rem; font-weight: 700; color: var(--gold); margin: 2rem 0 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.15); padding-bottom: 0.4rem; }
+    #modal-body h3 { font-size: 0.95rem; font-weight: 700; color: var(--gold2); margin: 1.25rem 0 0.5rem; }
+    #modal-body p { font-size: 0.9rem; color: var(--light); margin-bottom: 0.9rem; }
+    #modal-body strong { color: var(--white); font-weight: 600; }
+    #modal-body em { color: var(--muted); font-style: italic; }
+    #modal-body ul, #modal-body ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    #modal-body li { font-size: 0.9rem; color: var(--light); margin-bottom: 0.35rem; }
+    #modal-body blockquote {
+      border-left: 3px solid var(--gold); padding: 0.6rem 1rem;
+      margin: 1rem 0; background: rgba(201,168,76,0.06);
+      border-radius: 0 6px 6px 0;
+    }
+    #modal-body blockquote p { color: var(--gold2); font-style: italic; margin: 0; }
+    #modal-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    #modal-body th { background: rgba(201,168,76,0.12); color: var(--gold); font-weight: 600; padding: 0.6rem 0.75rem; text-align: left; border: 1px solid rgba(255,255,255,0.08); }
+    #modal-body td { padding: 0.5rem 0.75rem; border: 1px solid rgba(255,255,255,0.06); color: var(--light); }
+    #modal-body hr { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 1.75rem 0; }
+    #modal-body a { color: var(--gold); text-decoration: underline; }
+    #modal-body a:hover { color: var(--gold2); }
+    .modal-pdf-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold); font-size: 0.85rem; font-weight: 600;
+      padding: 0.6rem 1.1rem; border-radius: 6px;
+      text-decoration: none; margin: 1rem 0 0.5rem;
+      transition: all .2s;
+    }
+    .modal-pdf-link:hover { background: rgba(201,168,76,0.2); border-color: var(--gold); color: var(--gold2); text-decoration: none; }
+
+    /* ── AI APPROACH ── */
+    #ai { background: var(--navy3); }
+    .ai-intro { font-size: 1rem; color: var(--muted); max-width: 680px; margin-bottom: 3rem; line-height: 1.7; }
+    .ai-journey {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .ai-stage {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 1.5rem;
+      position: relative;
+      transition: border-color .2s, transform .2s;
+    }
+    .ai-stage:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-3px); }
+    .ai-stage-num {
+      font-size: 2rem; font-weight: 800; color: rgba(201,168,76,0.25);
+      line-height: 1; margin-bottom: 0.5rem;
+    }
+    .ai-stage-title { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .ai-stage-body { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+    .ai-stage-link { font-size: 0.78rem; color: var(--gold); font-weight: 600; margin-top: 0.75rem; display: block; text-decoration: none; }
+    .ai-stage-link:hover { color: var(--gold2); }
+    .ai-principle {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 10px; padding: 1.5rem 2rem;
+      max-width: 780px;
+    }
+    .ai-principle p { font-size: 0.95rem; color: var(--light); line-height: 1.75; margin: 0; }
+    .ai-principle strong { color: var(--gold); }
 
     /* ── PHILOSOPHY ── */
     #philosophy { background: var(--navy); }
@@ -216,6 +328,7 @@
       .hero-inner { grid-template-columns: 1fr; }
       .photo-wrap { display: none; }
       section { padding: 3.5rem 1.25rem; }
+      #modal-panel { padding: 1.75rem 1.25rem; }
     }
   </style>
 </head>
@@ -228,6 +341,7 @@
     <li><a href="#stats">Impact</a></li>
     <li><a href="#career">Career</a></li>
     <li><a href="#work">Work</a></li>
+    <li><a href="#ai">AI</a></li>
     <li><a href="#philosophy">Philosophy</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -326,43 +440,140 @@
     <h2 class="section-title">Platforms built. Problems solved. Mandates turned into transformations.</h2>
     <div class="divider"></div>
     <div class="cases-grid">
+
       <div class="case-card">
         <span class="case-tag">Platform · Amex</span>
         <div class="case-title">Global Money Movement Platform</div>
-        <div class="case-body">Grew a US-only bill pay system into a global platform supporting 30+ countries, every payment paradigm, and $1T+ annually. Proposed and led international expansion as a separate instance — against conventional wisdom — to protect the zero-outage standard. Every major business expansion (Merchant Financing, B2B, P2P, SMS, Alexa) started as a winning proposal, not a handed-down roadmap.</div>
+        <div class="case-body">Grew a US-only bill pay system into a global platform supporting 30+ countries, every payment paradigm, and $1T+ annually. Proposed and led international expansion as a separate instance — against conventional wisdom — to protect the zero-outage standard. Every major business expansion started as a winning proposal, not a handed-down roadmap.</div>
         <div class="case-metric">$1T+ · 15M daily API calls · 99.99% for 10 years</div>
+        <div class="case-footer">
+          <button class="deep-dive-btn" onclick="openModal('global-platform')">Deep Dive →</button>
+        </div>
       </div>
+
       <div class="case-card">
         <span class="case-tag">Compliance → Transformation · Amex</span>
         <div class="case-title">PCI DSS as a Platform Modernization Catalyst</div>
-        <div class="case-body">When PCI DSS compliance was mandated for UK debit payments, proposed using it as a catalyst to modernize the entire platform — monolith to microservices, event-driven architecture, CQRS, 200GB+ Redis cache. Made the case that sequential compliance then modernization costs more than doing both together. Leadership approved. Migrated 10+ years of transaction data (billions of records) with near-zero downtime.</div>
+        <div class="case-body">When PCI DSS compliance was mandated for UK debit payments, proposed using it as a catalyst to modernize the entire platform — monolith to microservices, event-driven architecture, CQRS, 200GB+ Redis cache. Made the case that doing both together costs less than sequentially. Leadership approved. Migrated billions of records with near-zero downtime.</div>
         <div class="case-metric">Billions of records migrated · Near-zero downtime · Architecture reshaped for years</div>
+        <div class="case-footer">
+          <button class="deep-dive-btn" onclick="openModal('pci-dss')">Deep Dive →</button>
+        </div>
       </div>
+
       <div class="case-card">
         <span class="case-tag">Embedded Finance · NM</span>
         <div class="case-title">SPI Platform &amp; Retirement Distribution Account</div>
-        <div class="case-body">Built from zero — no partner, no product owner, no playbook. When the Goldman Sachs partnership collapsed mid-build, pivoted the team proactively, led the fintech RFP across 6–7 candidates, challenged leadership's assumptions, selected Q2 + nbkc, and delivered the RDA to production in 18 months. Customers experience a seamless NM journey; the bank integration is invisible.</div>
+        <div class="case-body">Built from zero — no partner, no product owner, no playbook. When the Goldman Sachs partnership collapsed mid-build, pivoted the team proactively, led the fintech RFP across 6–7 candidates, challenged leadership's assumptions, selected Q2 + nbkc, and delivered the RDA to production in 18 months. Customers see a seamless NM experience; the bank is invisible.</div>
         <div class="case-metric">18 months contract to production · First embedded finance at NM</div>
+        <div class="case-footer">
+          <button class="deep-dive-btn" onclick="openModal('spi-rda')">Deep Dive →</button>
+        </div>
       </div>
+
       <div class="case-card">
         <span class="case-tag">Crisis Execution · Amex</span>
         <div class="case-title">PPP — $500M in 2 Weeks</div>
         <div class="case-body">During COVID-19, the SBA approved Amex as a PPP lender. With a small team and real urgency — small businesses needed help immediately — rolled up sleeves as a hands-on engineer and built a new line of business in two weeks. Speed mattered more than process. The team delivered.</div>
         <div class="case-metric">$500M+ disbursed · New LoB in 14 days</div>
+        <div class="case-footer">
+          <button class="deep-dive-btn" onclick="openModal('ppp')">Deep Dive →</button>
+        </div>
       </div>
+
       <div class="case-card">
         <span class="case-tag">Customer Obsession · Amex</span>
         <div class="case-title">Mexico Digital Transformation</div>
-        <div class="case-body">Original mandate: like-for-like migration. After two weeks embedded with the Mexico back-office operations team, proposed a full digital transformation instead — streamlining manual file processing into automated, digital workflows. Got leadership approval for the bigger scope. Downstream benefit: when SPEI real-time payments launched with stringent SLAs, the infrastructure was already in place.</div>
+        <div class="case-body">Original mandate: like-for-like migration. After two weeks embedded with the Mexico back-office operations team, proposed a full digital transformation instead — automating manual workflows, not just migrating them. Got leadership approval for the bigger scope. When SPEI real-time payments launched with stringent SLAs, the infrastructure was already in place.</div>
         <div class="case-metric">Manual → fully digital · Enabled SPEI, UK Faster Payments, India</div>
+        <div class="case-footer">
+          <button class="deep-dive-btn" onclick="openModal('mexico')">Deep Dive →</button>
+        </div>
       </div>
+
       <div class="case-card">
         <span class="case-tag">Strategic Vision · NM</span>
         <div class="case-title">CTO Capstone: Digital Financial Wellness Platform</div>
-        <div class="case-body">Proposed a CTO-led strategy to double NM's customer base from 5M to 10–12M in five years — through a Digital Financial Wellness Platform (save → build → grow) and a scalable Enterprise Partnership Platform built on SPI patterns. Full strategic analysis: SWOT, Porter's Five Forces, 5-year roadmap, $105–155M investment framework. Built on platforms already in production.</div>
+        <div class="case-body">Proposed a CTO-led strategy to double NM's customer base from 5M to 10–12M in five years — through a Digital Financial Wellness Platform (save → build → grow) and a scalable Enterprise Partnership Platform. Full strategic analysis: SWOT, Porter's Five Forces, 5-year roadmap, $105–155M investment framework. Built on platforms already in production.</div>
         <div class="case-metric">$105–155M roadmap · Save → Build → Grow journey · 5-year plan</div>
+        <div class="case-footer">
+          <button class="deep-dive-btn" onclick="openModal('cto-capstone')">Deep Dive →</button>
+          <a href="NM_CTO_Capstone.pdf" target="_blank" class="deep-dive-btn">View Report (PDF)</a>
+        </div>
       </div>
+
     </div>
+  </div>
+</section>
+
+<!-- AI APPROACH -->
+<section id="ai">
+  <div class="section-inner">
+    <p class="section-label">AI Leadership</p>
+    <h2 class="section-title">How I lead AI adoption</h2>
+    <div class="divider"></div>
+    <p class="ai-intro">
+      AI adoption isn't a tool rollout. It's a cultural transformation — and it follows the same playbook as any other: start with people, build habits, scale the infrastructure. Here's how I led my team through it.
+    </p>
+
+    <div class="ai-journey">
+
+      <div class="ai-stage">
+        <div class="ai-stage-num">01</div>
+        <div class="ai-stage-title">Learn First, Learn Together</div>
+        <div class="ai-stage-body">
+          Before anyone can use AI effectively, they need to understand it. I built
+          <strong style="color:var(--white)">codewithcopilot.ai</strong> — a curated, sequential learning path
+          with hands-on practice videos so the entire team could learn GitHub Copilot together, not just watch demos.
+          The structure matters: sequential, not random. Practice built in, not optional.
+        </div>
+        <a href="https://codewithcopilot.ai" target="_blank" class="ai-stage-link">codewithcopilot.ai ↗</a>
+      </div>
+
+      <div class="ai-stage">
+        <div class="ai-stage-num">02</div>
+        <div class="ai-stage-title">Embed AI in Every Repository</div>
+        <div class="ai-stage-body">
+          Learning without application fades. We began systematically adding AI context to every core
+          repository: Copilot instruction files, skill definitions, prompt libraries, and agent configuration files.
+          This made AI assistance domain-aware — tuned to payments engineering, not generic code completion.
+        </div>
+      </div>
+
+      <div class="ai-stage">
+        <div class="ai-stage-num">03</div>
+        <div class="ai-stage-title">Scale to Multi-Agent Workflows</div>
+        <div class="ai-stage-body">
+          The team moved beyond single-prompt interactions. We introduced
+          <strong style="color:var(--white)">Squad</strong>, an open-source multi-agent workflow framework,
+          running locally — enabling orchestrated AI workflows for complex engineering tasks that require
+          multiple models working in sequence.
+        </div>
+      </div>
+
+      <div class="ai-stage">
+        <div class="ai-stage-num">04</div>
+        <div class="ai-stage-title">Connect the Ecosystem</div>
+        <div class="ai-stage-body">
+          We integrated <strong style="color:var(--white)">Atlassian MCP</strong> (Model Context Protocol),
+          bridging AI assistance with our project management and documentation tools. AI now has context
+          across code, Jira, and Confluence — connected across the full engineering workflow, not siloed
+          in a single tool.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ai-principle">
+      <p>
+        <strong>The principle behind it all:</strong> AI adoption starts with people, not tools.
+        You prioritize learning, build habits through embedded documentation, scale with automation,
+        and connect the ecosystem. The same dual mindset I've always asked of engineers —
+        think like a product manager and an engineer simultaneously — now extends to thinking like
+        an AI architect too.
+      </p>
+    </div>
+
   </div>
 </section>
 
@@ -419,11 +630,80 @@
   &copy; 2026 Bharat Kumar Kondapalli &nbsp;·&nbsp; itsbkon.com
 </footer>
 
+<!-- MODAL OVERLAY -->
+<div id="modal-overlay" role="dialog" aria-modal="true">
+  <div id="modal-panel">
+    <button id="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <div id="modal-loading">Loading…</div>
+    <div id="modal-body" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 <script src="hero-content.js"></script>
 <script>
+  // Hero content
   document.getElementById('hero-eyebrow').innerHTML = HERO_EYEBROW;
   document.getElementById('hero-tagline').textContent = HERO_TAGLINE;
   document.getElementById('hero-value').textContent = HERO_VALUE.trim();
+
+  // Modal logic
+  const overlay = document.getElementById('modal-overlay');
+  const body    = document.getElementById('modal-body');
+  const loading = document.getElementById('modal-loading');
+
+  // Cache fetched content so repeat clicks are instant
+  const cache = {};
+
+  async function openModal(slug) {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    body.style.display = 'none';
+    loading.style.display = 'block';
+
+    // Scroll the panel to top
+    document.getElementById('modal-panel').scrollTop = 0;
+
+    try {
+      if (!cache[slug]) {
+        const res = await fetch(`case-studies/${slug}.md`);
+        if (!res.ok) throw new Error('Not found');
+        cache[slug] = await res.text();
+      }
+
+      let html = marked.parse(cache[slug]);
+
+      // Inject PDF button for capstone
+      if (slug === 'cto-capstone') {
+        html = html.replace(
+          '<blockquote>\n<p><strong>Full capstone report available for download below.</strong></p>\n</blockquote>',
+          '<a href="NM_CTO_Capstone.pdf" target="_blank" class="modal-pdf-link">📄 View Full Capstone Report (PDF)</a>'
+        );
+      }
+
+      body.innerHTML = html;
+      loading.style.display = 'none';
+      body.style.display = 'block';
+    } catch(e) {
+      loading.textContent = 'Could not load content. Please try again.';
+    }
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click (outside panel)
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
 </script>
 </body>
 </html>
