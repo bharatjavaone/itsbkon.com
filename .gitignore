@@ -41,6 +41,11 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Lambda packaging (not part of the site)
+package.json
+package-lock.json
+index.mjs
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
