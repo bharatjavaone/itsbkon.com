@@ -328,6 +328,26 @@
       max-width: 86%;
     }
 
+    /* Markdown rendered inside AI bubbles */
+    .bk-msg-markdown p { margin: 0 0 0.5rem; }
+    .bk-msg-markdown p:last-child { margin-bottom: 0; }
+    .bk-msg-markdown ul, .bk-msg-markdown ol { padding-left: 1.2rem; margin: 0.25rem 0 0.5rem; }
+    .bk-msg-markdown li { margin-bottom: 0.2rem; }
+    .bk-msg-markdown strong { color: #ffffff; font-weight: 600; }
+    .bk-msg-markdown em { color: #8fa3bb; }
+    .bk-msg-markdown h1, .bk-msg-markdown h2, .bk-msg-markdown h3 {
+      color: #c9a84c; font-size: 0.875rem; font-weight: 700;
+      margin: 0.75rem 0 0.35rem;
+    }
+    .bk-msg-markdown h1:first-child,
+    .bk-msg-markdown h2:first-child,
+    .bk-msg-markdown h3:first-child { margin-top: 0; }
+    .bk-msg-markdown hr { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 0.6rem 0; }
+    .bk-msg-markdown code {
+      background: rgba(255,255,255,0.08); border-radius: 3px;
+      padding: 0.1rem 0.35rem; font-size: 0.8rem;
+    }
+
     /* Mobile */
     @media (max-width: 480px) {
       #bk-chat-panel {
@@ -481,8 +501,15 @@
 
     const bubble = document.createElement('div');
     bubble.className = 'bk-msg-bubble';
-    // Render line breaks; escape HTML to prevent XSS
-    bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>');
+
+    if (role === 'ai' && window.marked) {
+      // AI responses: render markdown (marked.js is already loaded by the site)
+      bubble.classList.add('bk-msg-markdown');
+      bubble.innerHTML = window.marked.parse(text);
+    } else {
+      // User messages: plain text, escape HTML to prevent XSS
+      bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>');
+    }
 
     wrap.appendChild(bubble);
     messagesEl.appendChild(wrap);
